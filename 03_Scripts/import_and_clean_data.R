@@ -77,6 +77,24 @@ all_collar_data |>
 )
 
 
+# Time series movement of latitude
+
+all_collar_data |> 
+  ggplot() +
+  geom_line(aes(x = gmt_date_time, y = Latitude, color = collar_id), size = 0.2) +
+  scale_color_viridis_d() +
+  theme_bw() +
+  facet_wrap(~collar_id, scales = "free")
+
+
+# Time series movmenet of longitude
+all_collar_data |> 
+  ggplot() +
+  geom_line(aes(x = gmt_date_time, y = Longitude, color = collar_id), size = 0.2) +
+  scale_color_viridis_d() +
+  theme_bw() +
+  facet_wrap(~collar_id, scales = "free")
+
 # Using Shiny app from package bayesmove that I found from youtube video by Josh Cullen
 
 all_collar_data |> 
