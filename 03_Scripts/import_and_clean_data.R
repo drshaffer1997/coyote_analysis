@@ -66,3 +66,24 @@ all_collar_data |>
   summarise(n = n())    #### There are several points with no satellites recorded
 
 
+
+# plot points for each collar to see if their any major outliers
+plotly::ggplotly(
+all_collar_data |> 
+  ggplot(aes(x = Longitude, y = Latitude)) +
+  geom_path(aes(group = collar_id, color = collar_id), size = 0.25) +
+  scale_color_viridis_d() +
+  theme_bw()
+)
+
+
+# Using Shiny app from package bayesmove that I found from youtube video by Josh Cullen
+
+all_collar_data |> 
+  rename(id = collar_id,
+         date = gmt_date_time,
+         x = Longitude,
+         y = Latitude) |> 
+  bayesmove::shiny_tracks(epsg = 4326)
+
+
