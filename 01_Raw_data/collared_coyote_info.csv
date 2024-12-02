@@ -1,0 +1,24 @@
+coyote_id,field_id,coyote_name,collar_id,study_area,date_deployed,dropoff_or_mortality,retrieval_status,mortality_cause,time_deployed,sex,age,weight,weight_method,condition
+d2,m1,Jesse James,154962,DeLuca,1/23/2024,,,NA,9:01,M,Adult,37,actual,excellent
+d1,e1,Pearl Hart,154951,DeLuca,1/23/2024,,,NA,7:15,F,Adult,29,actual,great
+d3,w1,Johnny Cash,154965,DeLuca,1/23/2024,,,NA,9:26,M,Adult,42,no scale/not estimated but Alex Nicely thinks may have been largest of those he caught,great
+d4,w2,Jack Sparrow,154960,DeLuca,1/24/2024,,,NA,8:24,M,Adult,32.8,actual,good
+d5,e2,Bonnie,154953,DeLuca,1/25/2024,,,NA,7:20,F,Adult,29,estimated,good
+d6,e3,Clyde,154961,DeLuca,1/25/2024,,,NA,7:47,M,Adult,35,estimated,excellent
+d8,m2,Elizabeth Swann,154955,DeLuca,1/26/2024,10/13/2024,mortality,unknown,7:52,F,Adult,30,actual,excellent
+d9,m3,Doc Holliday,154963,DeLuca,1/26/2024,7/28/2024,mortality,unknown,8:30,M,Adult,42,actual,excellent
+d10,m4,Belle Star,154952,DeLuca,1/26/2024,,,,10:00,F,Adult,32,actual,excellent
+d7,e4,Big Nose Kate,154958,DeLuca,1/26/2024,,,,7:10,F,Adult,38,actual,excellent
+d11,m5,Dirty Dan,154956,DeLuca,1/27/2024,,,,8:30,M,Adult,36.5,actual,excellent
+d12,m6,Calamity Jane,154954,DeLuca,1/27/2024,,,,8:35,F,Adult,28.5,actual,good
+d13,m7,Annie Oakley,154957,DeLuca,1/27/2024,,,,11:34,F,Adult,32,actual,good
+d14,w4,Davy Jones,154964,DeLuca,1/30/2024,3/2/2024,mortality,vehicle strike,8:36,M,Adult,42,actual,good
+d15,m11,Pinhead Larry,154959,DeLuca,1/31/2024,,,,7:40,M,Adult,30,estimated,good
+t1,tt1,Hestia,84448,Tall Timbers,2/24/2024,,,,8:30 AM,F,Adult,35.7,actual,great
+t2,tt2,Prometheus,84432,Tall Timbers,2/26/2024,,,,7:35 AM,M,Adult,34.4,actual,great
+l1,lp1,Vesta,84455,Livingston Place,3/12/2024,,,,8:30 AM,F,Adult,24.9,actual,great
+l2,lp2,Vulcan,84436,Livingston Place,3/12/2024,,,,9:45 AM,M,Adult,31.5,actual,great
+l3,lp4,Sol,84442,Livingston Place,3/17/2024,,,,9:50,M,Adult,30.5,actual,great
+l4,lp5,Helios,84449,Livingston Place,3/20/2024,,,,10:05 AM,M,Adult,36.9,actual,great
+l5,lp6,Phoenix,84453,Livingston Place,3/21/2024,,,,9:45 AM,F,Adult,29.8,actual,great
+l6,lp7,Ra,84452,Livingston Place,3/29/2024,,,,11:48,M,Adult,32.3,actual,great
