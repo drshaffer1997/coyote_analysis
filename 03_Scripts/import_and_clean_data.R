@@ -6,11 +6,17 @@ library(tidyr)
 library(ggplot2)
 library(lubridate)
 
-# Import data from retrieved gps collars
+# Import coyote movement data from retrieved gps collars
 
 collar_id_154955 <- read_csv("01_Raw_data/deluca/PinPoint 154955 2024-10-17 10-11-29.csv", skip = 4)
 collar_id_154963 <- read_csv("01_Raw_data/deluca/PinPoint 154963 2024-08-02 11-02-41.csv", skip = 4)
 collar_id_154964 <- read_csv("01_Raw_data/deluca/PinPoint 154964 2024-06-11 14-11-47.csv", skip = 4)
+
+
+# Import coyote capture and data on when collar and coyote were both still active and data viable
+
+coyote_info <- read_csv("01_Raw_data/collared_coyote_info.csv") |> 
+  mutate(collar_id = as.factor(collar_id))  # factor to join layer later
 
 # Create loop to import and merge gps collar data
 
@@ -40,28 +46,38 @@ collar_id_154964 <- collar_id_154964 |>
 all_collar_data <- rbind(collar_id_154955, collar_id_154963, collar_id_154964) |> 
   mutate(collar_id = as.factor(collar_id))
 
+# Join coyote movement data with coyote info data
+
+all_collar_data_join_info <- left_join(all_collar_data, coyote_info)
+
 # Checking structure and format of data frames
 str(all_collar_data)
 
 
 # Convert timestamp column into correct format
 
-all_collar_data <- all_collar_data |> 
+all_collar_data_join_info <- all_collar_data_join_info |> 
   rename(gmt_date_time = `GMT Time`) |> 
-  mutate(gmt_date_time = as.POSIXct(gmt_date_time, "%m/%d/%Y %H:%M:%S", tz="GMT"))
+  mutate(gmt_date_time = as.POSIXct(gmt_date_time, "%m/%d/%Y %H:%M:%S", tz="GMT"),
+         date_deployed = as.POSIXct(date_deployed, "%m/%d/%Y", tz="GMT"),
+         dropoff_or_mortality = as.POSIXct(dropoff_or_mortality, "%m/%d/%Y", tz="GMT"))
+
+
+# Filter viable dates for each coyote
+
 
 
 #######   Explore the data   #######
 
 # check how many locations for each collar
-all_collar_data |> 
+all_collar_data_join_info |> 
   group_by(collar_id) |> 
   summarise(n = n())
 
 
 # check if how many satellites were used for points
 
-all_collar_data |> 
+all_collar_data_join_info |> 
   group_by(Satellites) |> 
   summarise(n = n())    #### There are several points with no satellites recorded
 
@@ -69,7 +85,7 @@ all_collar_data |>
 
 # plot points for each collar to see if their any major outliers
 plotly::ggplotly(
-all_collar_data |> 
+  all_collar_data_join_info |> 
   ggplot(aes(x = Longitude, y = Latitude)) +
   geom_path(aes(group = collar_id, color = collar_id), size = 0.25) +
   scale_color_viridis_d() +
@@ -79,7 +95,7 @@ all_collar_data |>
 
 # Time series movement of latitude
 
-all_collar_data |> 
+all_collar_data_join_info |> 
   ggplot() +
   geom_line(aes(x = gmt_date_time, y = Latitude, color = collar_id), size = 0.2) +
   scale_color_viridis_d() +
@@ -88,7 +104,7 @@ all_collar_data |>
 
 
 # Time series movmenet of longitude
-all_collar_data |> 
+all_collar_data_join_info |> 
   ggplot() +
   geom_line(aes(x = gmt_date_time, y = Longitude, color = collar_id), size = 0.2) +
   scale_color_viridis_d() +
@@ -97,7 +113,7 @@ all_collar_data |>
 
 # Using Shiny app from package bayesmove that I found from youtube video by Josh Cullen
 
-all_collar_data |> 
+all_collar_data_join_info |> 
   rename(id = collar_id,
          date = gmt_date_time,
          x = Longitude,
