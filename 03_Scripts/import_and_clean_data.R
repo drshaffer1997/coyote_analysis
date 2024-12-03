@@ -30,7 +30,7 @@ for (i in 1:num_files){
 }
 
 data
-# Add column with gps id
+# Add column with collar id
 
 collar_id_154955 <- collar_id_154955 |> 
   mutate(collar_id = "154955")
@@ -41,7 +41,7 @@ collar_id_154963 <- collar_id_154963 |>
 collar_id_154964 <- collar_id_154964 |> 
   mutate(collar_id = "154964")
 
-# Merge data frames for each collar
+# Merge data frames from each collar into one
 
 all_collar_data <- rbind(collar_id_154955, collar_id_154963, collar_id_154964) |> 
   mutate(collar_id = as.factor(collar_id))
@@ -51,7 +51,7 @@ all_collar_data <- rbind(collar_id_154955, collar_id_154963, collar_id_154964) |
 all_collar_data_join_info <- left_join(all_collar_data, coyote_info)
 
 # Checking structure and format of data frames
-str(all_collar_data)
+str(all_collar_data_join_info)
 
 
 # Convert timestamp column into correct format
@@ -63,9 +63,13 @@ all_collar_data_join_info <- all_collar_data_join_info |>
          dropoff_or_mortality = as.POSIXct(dropoff_or_mortality, "%m/%d/%Y", tz="GMT"))
 
 
+
+##### !!!!!!!!!!Need to find a way that's reproducible to filter dates... can I filter dates for
+##### different groups within a column or do I need to make them seperate data frames?
+
 # Filter viable dates for each coyote
 
-
+all_collar_data_join_info
 
 #######   Explore the data   #######
 
@@ -104,12 +108,13 @@ all_collar_data_join_info |>
 
 
 # Time series movmenet of longitude
+plotly::ggplotly(
 all_collar_data_join_info |> 
   ggplot() +
   geom_line(aes(x = gmt_date_time, y = Longitude, color = collar_id), size = 0.2) +
   scale_color_viridis_d() +
   theme_bw() +
-  facet_wrap(~collar_id, scales = "free")
+  facet_wrap(~collar_id, scales = "free"))
 
 # Using Shiny app from package bayesmove that I found from youtube video by Josh Cullen
 
