@@ -1,3 +1,8 @@
+# Creator: Dakotah Shaffer
+# Date: 12/10/2024
+# email: dakotahrshaffer@gmail.com
+
+
 ##### Importing and Cleaning Coyote Movement Data #####
 
 library(dplyr)
@@ -26,7 +31,7 @@ num_files <- length(deluca_files)
 
 for (i in 1:num_files){
   filename <- deluca_files[i]
-  data <- read_csv("01_Raw_data/deluca")   ######## code currently is not working... meet with Geraldine###
+  data <- read_csv(paste0("01_Raw_data/deluca/", filename), skip = 4)   ######## code currently is not working... meet with Geraldine###
 }
 
 data
@@ -88,13 +93,12 @@ all_collar_data_join_info |>
 
 
 # plot points for each collar to see if their any major outliers
-plotly::ggplotly(
+
   all_collar_data_join_info |> 
   ggplot(aes(x = Longitude, y = Latitude)) +
   geom_path(aes(group = collar_id, color = collar_id), size = 0.25) +
   scale_color_viridis_d() +
   theme_bw()
-)
 
 
 # Time series movement of latitude
@@ -126,3 +130,6 @@ all_collar_data_join_info |>
   bayesmove::shiny_tracks(epsg = 4326)
 
 
+
+### Turn into spatial dataframe then calculate how fast coyotes are moving
+# Visualization book 
