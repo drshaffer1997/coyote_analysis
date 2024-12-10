@@ -5,55 +5,45 @@
 
 ##### Importing and Cleaning Coyote Movement Data #####
 
-library(dplyr)
-library(readr)
-library(tidyr)
-library(ggplot2)
-library(lubridate)
+library(tidyverse)
 
 # Import coyote movement data from retrieved gps collars
 
-collar_id_154955 <- read_csv("01_Raw_data/deluca/PinPoint 154955 2024-10-17 10-11-29.csv", skip = 4)
-collar_id_154963 <- read_csv("01_Raw_data/deluca/PinPoint 154963 2024-08-02 11-02-41.csv", skip = 4)
-collar_id_154964 <- read_csv("01_Raw_data/deluca/PinPoint 154964 2024-06-11 14-11-47.csv", skip = 4)
+# collar_id_154955 <- read_csv("01_Raw_data/deluca/PinPoint 154955 2024-10-17 10-11-29.csv", skip = 4)
+# collar_id_154963 <- read_csv("01_Raw_data/deluca/PinPoint 154963 2024-08-02 11-02-41.csv", skip = 4)
+# collar_id_154964 <- read_csv("01_Raw_data/deluca/PinPoint 154964 2024-06-11 14-11-47.csv", skip = 4)
 
 
 # Import coyote capture and data on when collar and coyote were both still active and data viable
 
 coyote_info <- read_csv("01_Raw_data/collared_coyote_info.csv") |> 
-  mutate(collar_id = as.factor(collar_id))  # factor to join layer later
+  mutate(collar_id = as.factor(collar_id)) |>  # factor to join layer later 
+  dplyr::select(collar_id, study_area, date_deployed, dropoff_or_mortality)
 
-# Create loop to import and merge gps collar data
+# List all relevant files in the directory
+deluca_files <- list.files(path = "01_Raw_data/deluca", 
+                           pattern = "PinPoint", 
+                           full.names = TRUE)  # Include the full path to read files directly
 
-deluca_files <- list.files(path = "01_Raw_data/deluca", pattern = "PinPoint")
+# Initialize an empty list to store data frames
+all_data <- list()
 
-num_files <- length(deluca_files)
-
-for (i in 1:num_files){
-  filename <- deluca_files[i]
-  data <- read_csv(paste0("01_Raw_data/deluca/", filename), skip = 4)   ######## code currently is not working... meet with Geraldine###
+for (filename in deluca_files) {                           # Loop through each file and process
+  data <- read_csv(filename, skip = 4)                     # Read the CSV file, skipping the first 4 rows
+  data$collar_id <- str_sub(basename(filename), 10, 15)    # Add a column for the collar_id extracted from the filename
+  all_data[[length(all_data) + 1]] <- data                 # Append the processed data to the list
 }
 
-data
-# Add column with collar id
+deluca_collar_data <- bind_rows(all_data)  # Combine all data frames into a single data frame
 
-collar_id_154955 <- collar_id_154955 |> 
-  mutate(collar_id = "154955")
+head(deluca_collar_data)   # View the combined data
 
-collar_id_154963 <- collar_id_154963 |> 
-  mutate(collar_id = "154963")
-
-collar_id_154964 <- collar_id_154964 |> 
-  mutate(collar_id = "154964")
-
-# Merge data frames from each collar into one
-
-all_collar_data <- rbind(collar_id_154955, collar_id_154963, collar_id_154964) |> 
+deluca_collar_data <- deluca_collar_data |> 
   mutate(collar_id = as.factor(collar_id))
 
 # Join coyote movement data with coyote info data
 
-all_collar_data_join_info <- left_join(all_collar_data, coyote_info)
+all_collar_data_join_info <- left_join(deluca_collar_data, coyote_info)
 
 # Checking structure and format of data frames
 str(all_collar_data_join_info)
@@ -74,7 +64,9 @@ all_collar_data_join_info <- all_collar_data_join_info |>
 
 # Filter viable dates for each coyote
 
-all_collar_data_join_info
+all_collar_data_join_info <- all_collar_data_join_info |> 
+  filter(gmt_date_time >= date_deployed & gmt_date_time <= dropoff_or_mortality)
+  
 
 #######   Explore the data   #######
 
