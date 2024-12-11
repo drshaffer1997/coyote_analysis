@@ -76,8 +76,12 @@ all_collar_data_join_info |>
 
 all_collar_data_join_info |> 
   group_by(Satellites) |> 
-  summarise(n = n())    #### There are several points with no satellites recorded
+  summarise(n = n())    # at least 4 satellites are needed to determine location of moving objects
 
+
+# filter out locations with less than 4 satellites
+ all_collar_data_join_info <- all_collar_data_join_info |>
+   filter(Satellites >= 4)
 
 
 # plot points for each collar to see if their any major outliers
@@ -114,7 +118,7 @@ deluca_long_time_plot <- all_collar_data_join_info |>
 ggsave(filename = "deluca_long_time_plot.jpg", plot = deluca_long_time_plot, path = "05_Figures")
 
 
-# Using Shiny app from package bayesmove that I found from youtube video by Josh Cullen to visualize together
+# Using Shiny app from package bayesmove that I found from youtube video by Josh Cullen
 
 all_collar_data_join_info |> 
   rename(id = collar_id,
@@ -125,5 +129,3 @@ all_collar_data_join_info |>
 
 
 
-### Turn into spatial dataframe then calculate how fast coyotes are moving
-# Visualization book 
