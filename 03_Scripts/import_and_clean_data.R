@@ -58,10 +58,6 @@ all_collar_data_join_info <- all_collar_data_join_info |>
          dropoff_or_mortality = as.POSIXct(dropoff_or_mortality, "%m/%d/%Y", tz="GMT"))
 
 
-
-##### !!!!!!!!!!Need to find a way that's reproducible to filter dates... can I filter dates for
-##### different groups within a column or do I need to make them seperate data frames?
-
 # Filter viable dates for each coyote
 
 all_collar_data_join_info <- all_collar_data_join_info |> 
@@ -104,13 +100,12 @@ all_collar_data_join_info |>
 
 
 # Time series movmenet of longitude
-plotly::ggplotly(
 all_collar_data_join_info |> 
   ggplot() +
   geom_line(aes(x = gmt_date_time, y = Longitude, color = collar_id), size = 0.2) +
   scale_color_viridis_d() +
   theme_bw() +
-  facet_wrap(~collar_id, scales = "free"))
+  facet_wrap(~collar_id, scales = "free")
 
 # Using Shiny app from package bayesmove that I found from youtube video by Josh Cullen
 
