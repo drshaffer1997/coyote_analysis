@@ -1,2 +1,15 @@
-table	column_name	description	units
-all_collar_data			
+table,column_name,description,units,data_type
+collar_info,collar_id,GPS collar ID designated by Lotek,NA,Integer
+collar_info,study_area,Location where coyotes were collared,NA,character
+collar_info,date_deployed,Date collar was deployed on coyote,m/d/Y H:M:S,date and time
+collar_info,dropoff_or_mortality,Last date of viable data. Either from dropoff date or mortality of coyote,m/d/Y,date
+deluca_collar_data,GMT Time',Date and time recorded in GMT time for each GPS location,m/d/Y,date
+deluca_collar_data,Latitude,Latitude of GPS location,Decimal Degrees,double
+deluca_collar_data,Longitude,Longitude of GPS location,Decimal Degrees,double
+deluca_collar_data,Altitude,Altitude at GPS location,Meters,Integer
+deluca_collar_data,Duration,Amount of time in seconds it took for satellites to acquire GPS location,Seconds,Integer
+deluca_collar_data,Voltage,Voltage of main battery,Volts,Integer
+deluca_collar_data,DOP,"Dilution of Precision: An indicator of the quality of a GPS position, which takes account of each satellite's location relative to the other satellites in the constellation, and their geometry in relation to the GPS receiver. A low DOP value indicates a higher probability of accuracy",NA,double
+deluca_collar_data,Satellites,Satellites of GPS location,NA,Integer
+deluca_collar_data,Cause of Fix,Cause of Fix of GPS location. Can be from either GPS schedule or mortality signal,NA,character
+deluca_collar_data,collar_id,GPS collar ID designated by Lotek,NA,Integer
