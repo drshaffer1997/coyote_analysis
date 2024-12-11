@@ -82,32 +82,39 @@ all_collar_data_join_info |>
 
 # plot points for each collar to see if their any major outliers
 
-  all_collar_data_join_info |> 
+deluca_path_plot <- all_collar_data_join_info |> 
   ggplot(aes(x = Longitude, y = Latitude)) +
   geom_path(aes(group = collar_id, color = collar_id), size = 0.25) +
   scale_color_viridis_d() +
   theme_bw()
-
-
+  
+ggsave(filename = "deluca_path_plot.jpg", plot = deluca_path_plot, path = "05_Figures")
+  
+  
 # Time series movement of latitude
 
-all_collar_data_join_info |> 
+deluca_lat_time_plot <- all_collar_data_join_info |> 
   ggplot() +
   geom_line(aes(x = gmt_date_time, y = Latitude, color = collar_id), size = 0.2) +
   scale_color_viridis_d() +
   theme_bw() +
   facet_wrap(~collar_id, scales = "free")
 
+ggsave(filename = "deluca_lat_time_plot.jpg", plot = deluca_lat_time_plot, path = "05_Figures")
 
-# Time series movmenet of longitude
-all_collar_data_join_info |> 
+
+# Time series movemenet of longitude
+deluca_long_time_plot <- all_collar_data_join_info |> 
   ggplot() +
   geom_line(aes(x = gmt_date_time, y = Longitude, color = collar_id), size = 0.2) +
   scale_color_viridis_d() +
   theme_bw() +
   facet_wrap(~collar_id, scales = "free")
 
-# Using Shiny app from package bayesmove that I found from youtube video by Josh Cullen
+ggsave(filename = "deluca_long_time_plot.jpg", plot = deluca_long_time_plot, path = "05_Figures")
+
+
+# Using Shiny app from package bayesmove that I found from youtube video by Josh Cullen to visualize together
 
 all_collar_data_join_info |> 
   rename(id = collar_id,
